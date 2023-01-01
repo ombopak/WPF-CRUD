@@ -42,38 +42,14 @@ namespace LearnWPF
             InitializeComponent();
             FillGridView();
 
-
-            // Create a new HttpClient and set its base address
-           
-
-
-            // Send a GET request to the API and get the response asynchronously
-            //Task<HttpResponseMessage> responseTask = client.GetAsync("endpoint");
-
-            // Wait for the response to complete
-           // responseTask.Wait();
-
-            // Get the response
-            //HttpResponseMessage response = responseTask.Result;
-
-            // Get the content of the response
-            //HttpContent content = response.Content;
-
-            // Read the content as a string
-           // string result = content.ReadAsStringAsync().Result;
-
-            // Do something with the result
-           // Console.WriteLine(result);
         }
 
         void FillGridView()
         {
             //USING REST API
             string getAllBooks = "GetAllBooks";
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(baseAddress);
-
             Task<HttpResponseMessage> responseTask = client.GetAsync(getAllBooks);
             responseTask.Wait();
             HttpResponseMessage response = responseTask.Result;
@@ -112,8 +88,8 @@ namespace LearnWPF
             try
             {                
                Book row = dataGridViewBooks.SelectedCells[0].Item as Book;
-                int bookId = row.BookId;
-                // Debug.WriteLine(bookId);
+                var bookId = row.BookId;
+                 Debug.WriteLine("THIS IS YOUR BOOK ID : "+bookId);
                  EditBookWindow editBookWindow = new EditBookWindow(bookId);
                editBookWindow.ShowDialog();
                
@@ -151,26 +127,22 @@ namespace LearnWPF
 
                     try
                     {
-                        Debug.WriteLine(bookId);
+                        //USING REST API
+                        //Debug.WriteLine(bookId);
                         string deleteBook = $"DeleteBook?BookId={bookId}";
-
                         HttpClient client = new HttpClient();
                         client.BaseAddress = new Uri(baseAddress);
-
-
                         HttpResponseMessage responseTask = client.DeleteAsync(deleteBook).Result;
-
                         if(responseTask.StatusCode == HttpStatusCode.OK)
                         {
                             MessageBox.Show("Book Deleted");
-
                         }
                         else
                         {
                             MessageBox.Show("Something Wrong, Book didnt get deleted");
                         }
 
-
+                        //USING SQL SERVER CONNECTION
                         //book.DeleteBook(bookId);
                         FillGridView();
                     }
